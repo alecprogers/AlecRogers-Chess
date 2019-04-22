@@ -1,14 +1,18 @@
 package com.chess.logic;
 
+import com.chess.gui.GUI;
+
 public class Game {
 
     private ChessBoard game;
+    private Move curMove;
 
     private boolean whiteToMove;
     private boolean whiteInCheck;
     private boolean blackInCheck;
 
     private int gameStatus;
+
 
     public Game() {
         game = new ChessBoard();
@@ -20,13 +24,22 @@ public class Game {
         gameStatus = 0;
     }
 
+    // GUI Constructor // FIXME
+    public Game(ChessBoard game, String fromCoords, String toCoords) {
+        this.game = game;
+
+        whiteToMove = true;
+
+        this.curMove = new Move(game, whiteToMove, fromCoords, toCoords);
+    }
+
     public ChessBoard playTurn() {
 
-        Move curMove = new Move();
+        Move curMove = new Move(game, whiteToMove);
 
         boolean validMove = false;
         while (!validMove) {
-            validMove = curMove.getMove(game, whiteToMove);
+            validMove = curMove.checkMove();
             if (!validMove) {
                 System.out.print("Invalid move. Please enter a different move.\n");
             }
@@ -50,7 +63,7 @@ public class Game {
         game.printBoard();
     }
 
-    public ChessBoard getGame() {
+    public ChessBoard getChessBoard() {
         return game;
     }
 

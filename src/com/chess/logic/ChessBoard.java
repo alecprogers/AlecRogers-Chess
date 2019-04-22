@@ -153,8 +153,8 @@ public class ChessBoard {
         game[fromX][fromY] = new Piece(Util.rowToRank(fromX), Util.colToFile(fromY));
     }
 
-    // Receives (X, Y) coords to move from/to, returns true if move is legal
-    public boolean checkMove(boolean whiteToMove, int fromX, int fromY, int toX, int toY) {
+    // Receives (X, Y) coords to move from/to, returns true if move is physically legal
+    public boolean checkPhysics(boolean whiteToMove, int fromX, int fromY, int toX, int toY) {
 
         // Check to make sure moved piece is correct color
         if (game[fromX][fromY].isWhite() != whiteToMove) {

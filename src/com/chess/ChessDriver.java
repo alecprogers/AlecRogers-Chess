@@ -12,6 +12,8 @@ package com.chess;
 import com.chess.logic.*;
 import com.chess.gui.*;
 
+import javax.swing.*;
+
 public class ChessDriver {
 
     public static void main(String[] args) {
@@ -19,7 +21,7 @@ public class ChessDriver {
 
         Game game = new Game();
 
-        GUI gui = new GUI();
+        GUI gui = new GUI(game.getChessBoard());
 
         int gameStatus = 0;
 
@@ -36,7 +38,7 @@ public class ChessDriver {
         while (gameStatus == 0 || gameStatus == 3 || gameStatus == 4) { // game is still going
             game.printGame();
 
-            // gui.update(game.getGame());
+            //gui = new GUI(game.getChessBoard()); // fixme
 
             game.playTurn();
 
@@ -46,6 +48,7 @@ public class ChessDriver {
                 System.out.print("BLACK IN CHECK\n");
             else if (gameStatus == 4)
                 System.out.print("WHITE IN CHECK\n");
+            //gui.updateTitle("END OF AN ERA\n");
         }
 
         if (gameStatus == 1)

@@ -1,9 +1,13 @@
 package com.chess.logic;
 
 import com.chess.Util;
+import com.chess.gui.GUI;
+
 
 public class Move {
 
+    ChessBoard curGame;
+    boolean whiteToMove;
     private String fromCoord;
     private String toCoord;
     private int fromX;
@@ -12,12 +16,26 @@ public class Move {
     private int toY;
 
     // No arg constructor -- gets all its own info from user
-    public Move() {
-
+    public Move(ChessBoard game, boolean whiteToMove) {
+        curGame = game;
+        this.whiteToMove = whiteToMove;
     }
 
-    // Gets input from user, returns true if move was successful
-    public boolean getMove(ChessBoard curGame, boolean whiteToMove) {
+
+    public Move(ChessBoard game, boolean whiteToMove, String fromCoord, String toCoord) {
+        curGame = game;
+        this.whiteToMove = whiteToMove;
+        this.fromCoord = fromCoord;
+        this.toCoord = toCoord;
+
+        this.fromX = Util.rankToRow(fromCoord);
+        this.fromY = Util.fileToCol(fromCoord);
+        this.toX = Util.rankToRow(toCoord);
+        this.toY = Util.fileToCol(toCoord);
+    }
+
+    // Gets input from user
+    public void getMove() {
         System.out.print("Enter the coordinate to move FROM: ");
         String fromCoord = Util.getString();
         fromCoord = verifyCoord(fromCoord);
@@ -33,9 +51,15 @@ public class Move {
         this.toCoord = toCoord;
         this.toX = Util.rankToRow(toCoord);
         this.toY = Util.fileToCol(toCoord);
+    }
+
+    // Gets input from user, returns true if move was successful
+    public boolean checkMove() {
+
+        getMove(); // FIXME
 
         // Check if move is legal from physics standpoint
-        if (!curGame.checkMove(whiteToMove, fromX, fromY, toX, toY)) {
+        if (!curGame.checkPhysics(whiteToMove, fromX, fromY, toX, toY)) {
             return false;
         }
 
