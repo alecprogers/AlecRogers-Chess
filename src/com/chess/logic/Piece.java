@@ -39,48 +39,46 @@ public class Piece {
         empty = true;
     }
 
-    public String toString(Piece p) {
+    public String toString() {
         String outString;
-        int type = p.getType();
-        boolean isWhite = p.isWhite();
         switch (type) {
             case 0: // king
-                if (isWhite)
+                if (white)
                     outString = "K";
                 else
                     outString = "k";
                 break;
 
             case 1: // queen
-                if (isWhite)
+                if (white)
                     outString = "Q";
                 else
                     outString = "q";
                 break;
 
             case 2: // rook
-                if (isWhite)
+                if (white)
                     outString = "R";
                 else
                     outString = "r";
                 break;
 
             case 3: // bishop
-                if (isWhite)
+                if (white)
                     outString = "B";
                 else
                     outString = "b";
                 break;
 
             case 4: // knight
-                if (isWhite)
+                if (white)
                     outString = "N";
                 else
                     outString = "n";
                 break;
 
             case 5: // pawn
-                if (isWhite)
+                if (white)
                     outString = "P";
                 else
                     outString = "p";

@@ -1,9 +1,15 @@
 package com.chess.gui;
 
 import com.chess.Util;
+import com.chess.logic.ChessBoard;
+import com.chess.logic.Piece;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,6 +17,7 @@ public class GUI {
 
     private JFrame gameFrame;
     private BoardPanel boardPanel;
+    private ChessBoard chessBoard;
 
     private static Dimension WINDOW_SIZE = new Dimension(600, 600);
     private static Dimension BOARD_SIZE = new Dimension(400, 350); // fixme change these values ?
@@ -20,6 +27,8 @@ public class GUI {
     private Color darkTileColor = Color.decode("#848484");
 
     public GUI() {
+        chessBoard = new ChessBoard();
+
         gameFrame = new JFrame("Chess");
         gameFrame.setSize(WINDOW_SIZE);
         gameFrame.setLayout(new BorderLayout());
@@ -55,15 +64,47 @@ public class GUI {
     private class TilePanel extends JPanel {
 
         private String coords;
+        private int row;
+        private int col;
 
         TilePanel(BoardPanel boardPanel, String coords) {
             super(new GridBagLayout());
 
             this.coords = coords;
 
+            row = Util.rankToRow(coords);
+            col = Util.fileToCol(coords);
+
             setPreferredSize(TILE_SIZE);
             setTileColor();
+            addPieceImg(chessBoard);
             validate();
+        }
+
+        private void addPieceImg(ChessBoard board) {
+            removeAll();
+            Piece curPiece = board.getGame()[row][col];
+
+            if (curPiece.isEmpty())
+                return;
+
+            String imgPath = "src/graphics/"; // fixme
+            String colorLetter = "w";
+
+            if (!curPiece.isWhite()) {
+                colorLetter = "b";
+            }
+
+            String pieceLetter = curPiece.toString().toLowerCase();
+
+            try {
+                BufferedImage img = ImageIO.read(new File(imgPath + colorLetter + pieceLetter + ".png"));
+                add(new JLabel(new ImageIcon(img)));
+            }
+            catch (IOException e) {
+                System.err.print("Unable to get piece image. Check graphics directory.\n");
+                e.printStackTrace();
+            }
         }
 
         private void setTileColor() {

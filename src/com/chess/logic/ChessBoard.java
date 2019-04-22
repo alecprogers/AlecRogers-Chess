@@ -187,31 +187,23 @@ public class ChessBoard {
     }
 
     // Receives (X, Y) coords to move from/to, returns false if move is castle from or through check
-    public boolean isFromThroughCheck(int fromX, int fromY, int toX, int toY) {
+    public boolean checkCastle(int fromX, int fromY, int toX, int toY) {
 
         if (game[fromX][fromY].getType() == 0) {
             if (fromX == 7 && fromY == 4) { // white king
                 if (toX == 7 && toY == 6) { // kingside castle
-                    if (isInCheck("e1") || isInCheck("f1")) {
-                        return false;
-                    }
+                    return (isInCheck("e1") || isInCheck("f1")); // returns false if in check
                 }
                 else if (toX == 7 && toY == 2) { // queenside castle
-                    if (isInCheck("e1") || isInCheck("d1")) {
-                        return false;
-                    }
+                    return (isInCheck("e1") || isInCheck("d1"));
                 }
             }
             else if (fromX == 0 && fromY == 4) { // black king
                 if (toX == 0 && toY == 6) { // kingside castle
-                    if (isInCheck("e8") || isInCheck("f8")) {
-                        return false;
-                    }
+                    return (isInCheck("e8") || isInCheck("f8"));
                 }
                 else if (toX == 0 && toY == 2) { // queenside castle
-                    if (isInCheck("e8") || isInCheck("d8")) {
-                        return false;
-                    }
+                    return (isInCheck("e8") || isInCheck("d8"));
                 }
             }
         }
@@ -242,14 +234,6 @@ public class ChessBoard {
                 }
             }
         }
-        return false;
-    }
-
-    // Determines if game is stalemate, returns true if it is
-    public boolean isStalemate(boolean whiteToMove) {
-        // go through each piece for whiteToMove
-        // get all moves for one at a time, goal is to find a single move that does not result in check
-
         return false;
     }
 
@@ -530,13 +514,13 @@ public class ChessBoard {
                             count++;
                         }
                     }
-                    if (mY != 0 && !game[mX - 1][mY - 1].isEmpty() && game[mX - 1][mY - 1].isWhite() != isWhite) {
+                    if (mY != 0 && !game[mX - 1][mY - 1].isEmpty() && !game[mX - 1][mY - 1].isWhite()) {
                         Piece curP = game[mX - 1][mY - 1];
                         String move = curP.getFile() + curP.getRank();
                         allMoves[count] = move;
                         count++;
                     }
-                    if (mY != 7 && !game[mX - 1][mY + 1].isEmpty() && game[mX - 1][mY + 1].isWhite() != isWhite) {
+                    if (mY != 7 && !game[mX - 1][mY + 1].isEmpty() && !game[mX - 1][mY + 1].isWhite()) {
                         Piece curP = game[mX - 1][mY + 1];
                         String move = curP.getFile() + curP.getRank();
                         allMoves[count] = move;
@@ -566,13 +550,13 @@ public class ChessBoard {
                             count++;
                         }
                     }
-                    if (mY != 0 && !game[mX + 1][mY - 1].isEmpty() && game[mX + 1][mY - 1].isWhite() != isWhite) {
+                    if (mY != 0 && !game[mX + 1][mY - 1].isEmpty() && game[mX + 1][mY - 1].isWhite()) {
                         Piece curP = game[mX + 1][mY - 1];
                         String move = curP.getFile() + curP.getRank();
                         allMoves[count] = move;
                         count++;
                     }
-                    if (mY != 7 && !game[mX + 1][mY + 1].isEmpty() && game[mX + 1][mY + 1].isWhite() != isWhite) {
+                    if (mY != 7 && !game[mX + 1][mY + 1].isEmpty() && game[mX + 1][mY + 1].isWhite()) {
                         Piece curP = game[mX + 1][mY + 1];
                         String move = curP.getFile() + curP.getRank();
                         allMoves[count] = move;
@@ -680,7 +664,7 @@ public class ChessBoard {
                 else isBlackSquare = false;
                 if (isBlackSquare) System.out.print("/ ");
                 else System.out.print("  ");
-                System.out.print(game[r][c].toString(game[r][c]));
+                System.out.print(game[r][c].toString());
                 if (isBlackSquare) System.out.print(" /|");
                 else System.out.print("  |");
             }

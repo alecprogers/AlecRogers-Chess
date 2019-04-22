@@ -40,7 +40,7 @@ public class Move {
         }
 
         // Check if move is castle that goes from or through check
-        if (!curGame.isFromThroughCheck(fromX, fromY, toX, toY)) {
+        if (!curGame.checkCastle(fromX, fromY, toX, toY)) {
             return false;
         }
 
@@ -151,7 +151,7 @@ public class Move {
     public String verifyCoord(String coord) {
         boolean isCoord = false;
         if (coord.matches("[a-h][1-8]")) isCoord = true;
-        while (isCoord == false) {
+        while (!isCoord) {
             System.out.print("Invalid coordinate. Please try again: ");
             coord = Util.getString();
             if (coord.matches("[a-h][1-8]")) isCoord = true;
