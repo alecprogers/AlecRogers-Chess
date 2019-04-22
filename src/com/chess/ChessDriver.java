@@ -46,7 +46,10 @@ public class ChessDriver {
                 System.out.print("BLACK IN CHECK\n");
             else if (gameStatus == 4)
                 System.out.print("WHITE IN CHECK\n");
-            //gui.updateTitle("END OF AN ERA\n");
+
+            //gui.updateTitle("NEW TITLE\n");
+
+            gui.updateBoard(game.getChessBoard());
         }
 
 

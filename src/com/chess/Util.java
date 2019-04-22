@@ -41,6 +41,16 @@ public class Util {
         return file + "";
     }
 
+    // Gets full coords, returns coords to move from
+    public static String parseFromCoords(String inMove) {
+        return inMove.substring(0, inMove.length() - 2);
+    }
+
+    // Gets full coords, returns coords to move to
+    public static String parseToCoords(String inMove) {
+        return inMove.substring(inMove.length() - 2);
+    }
+
     // Helper method that gets String from user
     public static String getString() {
         Scanner keyboard = new Scanner(System.in);
@@ -76,5 +86,12 @@ public class Util {
             if (coord.matches("[a-h][1-8]")) isCoord = true;
         }
         return coord;
+    }
+
+    // Helper method that makes user press enter to continue
+    public static void enterToContinue() {
+        System.out.print("Press Enter to continue\n");
+        Scanner keyboard = new Scanner(System.in);
+        keyboard.nextLine();
     }
 }

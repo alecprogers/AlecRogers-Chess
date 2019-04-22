@@ -42,7 +42,8 @@ public class Game {
     public ChessBoard playTurn() {
 
         Interface intFace = new Interface(gameLog, board, whiteToMove);
-        Move curMove = intFace.getMoveFromConsole();
+        //Move curMove = intFace.getMoveFromConsole();
+        Move curMove = intFace.getMoveFromGUI();
 
         boolean validMove = false;
         while (!validMove) {

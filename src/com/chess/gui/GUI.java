@@ -28,6 +28,9 @@ public class GUI {
     private String fromCoords;
     private String toCoords;
 
+    // FIXME not sure if this is right
+    private GUIMove guiMove;
+
     private Color lightTileColor = Color.decode("#E6E6E6");
     private Color darkTileColor = Color.decode("#848484");
 
@@ -41,6 +44,8 @@ public class GUI {
         fromCoords = "";
         toCoords = "";
 
+        guiMove = new GUIMove(); // FIXME this could be wrong
+
         gameFrame = new JFrame("Chess");
         gameFrame.setSize(WINDOW_SIZE);
         gameFrame.setLayout(new BorderLayout());
@@ -51,7 +56,12 @@ public class GUI {
         gameFrame.setVisible(true);
     }
 
-    public void updateTitle(String newTitle) {
+    public void updateBoard(ChessBoard game) {
+        this.game = game;
+        boardPanel.drawBoard(game);
+    }
+
+    public void updateTitle(String newTitle) { // todo do something with this or delete it
         gameFrame.setTitle(newTitle);
     }
 
@@ -76,12 +86,17 @@ public class GUI {
 
         public void drawBoard(ChessBoard board) {
             removeAll();
-            for (TilePanel tilePanel : tiles) {
-                tilePanel.drawTile(board);
-                add(tilePanel);
+
+            int i = -1;
+            for (int r = 0; r < 8; r++) {
+                for (int c = 0; c < 8; c++) {
+                    i++;
+                    Piece curPiece = board.getGame()[r][c];
+                    tiles.set(i, new TilePanel(boardPanel, Util.colToFile(c) + Util.rowToRank(r)));
+                    add(tiles.get(i));
+                }
             }
-            validate();
-            repaint();
+            this.validate();
         }
     }
 
@@ -98,19 +113,17 @@ public class GUI {
 
             this.coords = coords;
 
-            row = Util.rankToRow(coords);
-            col = Util.fileToCol(coords);
+            this.row = Util.rankToRow(coords);
+            this.col = Util.fileToCol(coords);
 
-            curPiece = game.getGame()[row][col];
+            this.curPiece = game.getGame()[row][col];
 
             setPreferredSize(TILE_SIZE);
             setTileColor();
 
-
-
-
-
             setLayout(new GridLayout());
+
+
 
             if (curPiece.isEmpty()) {
                 btn = addButton();
@@ -118,6 +131,9 @@ public class GUI {
             else {
                 btn = addPieceImg(getTilePiece());
             }
+
+
+
             this.add(btn);
 
 
@@ -127,26 +143,21 @@ public class GUI {
                 public void actionPerformed(ActionEvent e) {
                     System.out.print("\nButton at " + coords + " has been pressed\n");
 
-                    if (fromCoords.equals("")) {
-                        fromCoords = coords;
-                    }
-                    else if (fromCoords.equals(coords)) {
-                        fromCoords = "";
-                    }
-                    else {
-                        toCoords = coords;
-                    }
-                    if (!fromCoords.equals("") && !toCoords.equals("")) {
-                       // Game thisMove = new Game(game, fromCoords, toCoords);
-                        // thisMove.playTurn();
-                    }
+                    guiMove.clickCoords(coords);
                 }
             });
 
             validate();
         }
 
-        public void drawTile(ChessBoard board) {
+        /*
+        public void setCurPiece(Piece curPiece) {
+            this.curPiece = curPiece;
+        }
+
+        public void drawTile() {
+
+            // FIXME
             setTileColor();
             if (curPiece.isEmpty()) {
                 btn = addButton();
@@ -154,9 +165,16 @@ public class GUI {
             else {
                 btn = addPieceImg(getTilePiece());
             }
-            validate();
             repaint();
+            this.add(btn);
+
+            validate();
         }
+
+        private void initializeButton() {
+
+        }
+         */
 
         private String getTilePiece() {
             String colorLetter = "";

@@ -1,6 +1,7 @@
 package com.chess.logic;
 
 import com.chess.Util;
+import com.chess.gui.GUIMove;
 
 public class Interface {
 
@@ -38,11 +39,23 @@ public class Interface {
 
     public Move getMoveFromGUI() {
 
-        // TODO Not sure what needs to go here
+        GUIMove guiMove = new GUIMove();
 
+        String coords = guiMove.getMove();
+        while (!guiMove.hasFullMove()) {
 
-        // return new Move(board, whiteToMove, fromCoords, toCoords) // FIXME this should be the return
-        return new Move();
+            //Util.enterToContinue();
+
+            coords = guiMove.getMove();
+        }
+
+        fromCoords = Util.parseFromCoords(coords);
+        toCoords = Util.parseToCoords(coords);
+
+        System.out.print("\nMOVE: " + coords + "\n\n");
+
+        return new Move(board, whiteToMove, fromCoords, toCoords);
+        //return new Move();
     }
 
 }

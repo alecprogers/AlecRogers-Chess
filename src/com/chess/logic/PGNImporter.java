@@ -49,10 +49,9 @@ public class PGNImporter {
     }
 
     public Move getNextMove() {
-        String toCoords = parseToCoords(pgnMoves.get(curMove));
+        String toCoords = Util.parseToCoords(pgnMoves.get(curMove));
 
-        String fromCoords = parseFromCoords(pgnMoves.get(curMove));
-
+        String fromCoords = Util.parseFromCoords(pgnMoves.get(curMove));
 
         System.out.print("Move " + curMove + ": " + fromCoords + toCoords + "\n");
 
@@ -60,33 +59,4 @@ public class PGNImporter {
 
         return new Move();
     }
-
-    public String parseToCoords(String inMove) {
-        return inMove.substring(inMove.length() - 2);
-    }
-
-    public String parseFromCoords(String inMove) {
-        return inMove.substring(0, inMove.length() - 2);
-
-        /*
-        Piece curPiece = new Piece();
-
-        // Iterate through board and see which piece is capable of moving to toCoords
-        for (int r = 0; r < 8; r++) {
-            for (int c = 0; c < 8; c++) {
-                curPiece = board.getGame()[r][c];
-                String[] allMoves = board.getAllMoves(curPiece);
-                for (int i = 0; i < allMoves.length; i++) {
-                    if (allMoves[i].equals(toCoords)) {
-                        return curPiece.getFile() + curPiece.getRank();
-                    }
-                }
-            }
-        }
-
-        return "";
-
-         */
-    }
-
 }
