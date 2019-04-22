@@ -9,21 +9,24 @@ public class Move {
     private ChessBoard board;
     private boolean whiteToMove;
 
+    private String fromCoord;
+    private String toCoord;
     private int fromX;
     private int fromY;
     private int toX;
     private int toY;
 
     // No arg constructor -- gets all its own info from user
-    public Move(ChessBoard board, boolean whiteToMove) {
-        this.board = board;
-        this.whiteToMove = whiteToMove;
+    public Move() {
     }
 
-
+    // Should be used every time
     public Move(ChessBoard board, boolean whiteToMove, String fromCoord, String toCoord) {
         this.board = board;
         this.whiteToMove = whiteToMove;
+
+        this.fromCoord = fromCoord;
+        this.toCoord = toCoord;
 
         this.fromX = Util.rankToRow(fromCoord);
         this.fromY = Util.fileToCol(fromCoord);
@@ -166,4 +169,11 @@ public class Move {
         return 0;
     }
 
+    public String getToCoord() {
+        return toCoord;
+    }
+
+    public String getFromCoord() {
+        return fromCoord;
+    }
 }

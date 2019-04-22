@@ -1,7 +1,5 @@
 package com.chess.logic;
 
-import com.chess.gui.GUI;
-
 public class Game {
 
     private ChessBoard board;
@@ -13,9 +11,17 @@ public class Game {
 
     private int gameStatus;
 
+    private PGNImporter inputPGN;
+    private PGNWriter gameLog;
 
-    public Game() {
+
+    public Game(boolean importPgn) {
         board = new ChessBoard();
+
+        if (importPgn) {
+            inputPGN = new PGNImporter();
+        }
+        //gameLog = new PGNWriter(); // FIXME
 
         whiteToMove = true;
         whiteInCheck = false;
@@ -35,7 +41,7 @@ public class Game {
 
     public ChessBoard playTurn() {
 
-        Interface intFace = new Interface(board, whiteToMove);
+        Interface intFace = new Interface(gameLog, board, whiteToMove);
         Move curMove = intFace.getMoveFromConsole();
 
         boolean validMove = false;
@@ -47,6 +53,9 @@ public class Game {
             }
         }
         gameStatus = curMove.getStatus(board, whiteToMove);
+
+        //gameLog.addMove(curMove.getFromCoord() + curMove.getToCoord()); // FIXME
+        //gameLog.printToFile();
 
         whiteToMove = !whiteToMove;
 

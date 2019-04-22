@@ -12,14 +12,12 @@ package com.chess;
 import com.chess.logic.*;
 import com.chess.gui.*;
 
-import javax.swing.*;
-
 public class ChessDriver {
 
     public static void main(String[] args) {
         System.out.print("Hello, Pariveda\n\n");
 
-        Game game = new Game();
+        Game game = new Game(false); // todo let user decide to import or not
 
         GUI gui = new GUI(game.getChessBoard());
 
@@ -50,6 +48,8 @@ public class ChessDriver {
                 System.out.print("WHITE IN CHECK\n");
             //gui.updateTitle("END OF AN ERA\n");
         }
+
+
 
         if (gameStatus == 1)
             System.out.print("CHECKMATE: WHITE WINS\n");

@@ -11,7 +11,7 @@ public class Interface {
     private String toCoords;
 
 
-    public Interface(ChessBoard board, boolean whiteToMove) {
+    public Interface(PGNWriter gameLog, ChessBoard board, boolean whiteToMove) {
         this.board = board;
         this.whiteToMove = whiteToMove;
     }
@@ -29,8 +29,20 @@ public class Interface {
         return new Move(board, whiteToMove, fromCoords, toCoords);
     }
 
-    public void getMoveFromPGN() {
+    public Move getMoveFromPGN() { // FIXME
+        PGNImporter pgn = new PGNImporter();
+        pgn.getNextMove();
 
+        return new Move();
+    }
+
+    public Move getMoveFromGUI() {
+
+        // TODO Not sure what needs to go here
+
+
+        // return new Move(board, whiteToMove, fromCoords, toCoords) // FIXME this should be the return
+        return new Move();
     }
 
 }
