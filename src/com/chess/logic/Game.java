@@ -4,7 +4,7 @@ import com.chess.gui.GUI;
 
 public class Game {
 
-    private ChessBoard game;
+    private ChessBoard board;
     private Move curMove;
 
     private boolean whiteToMove;
@@ -15,7 +15,7 @@ public class Game {
 
 
     public Game() {
-        game = new ChessBoard();
+        board = new ChessBoard();
 
         whiteToMove = true;
         whiteInCheck = false;
@@ -25,30 +25,32 @@ public class Game {
     }
 
     // GUI Constructor // FIXME
-    public Game(ChessBoard game, String fromCoords, String toCoords) {
-        this.game = game;
+    public Game(ChessBoard board, String fromCoords, String toCoords) {
+        this.board = board;
 
         whiteToMove = true;
 
-        this.curMove = new Move(game, whiteToMove, fromCoords, toCoords);
+        this.curMove = new Move(board, whiteToMove, fromCoords, toCoords);
     }
 
     public ChessBoard playTurn() {
 
-        Move curMove = new Move(game, whiteToMove);
+        Interface intFace = new Interface(board, whiteToMove);
+        Move curMove = intFace.getMoveFromConsole();
 
         boolean validMove = false;
         while (!validMove) {
             validMove = curMove.checkMove();
             if (!validMove) {
                 System.out.print("Invalid move. Please enter a different move.\n");
+                curMove = intFace.getMoveFromConsole();
             }
         }
-        gameStatus = curMove.getStatus(game, whiteToMove);
+        gameStatus = curMove.getStatus(board, whiteToMove);
 
         whiteToMove = !whiteToMove;
 
-        return game;
+        return board;
     }
 
     public int getGameStatus() {
@@ -60,11 +62,11 @@ public class Game {
             System.out.print("WHITE TO MOVE\n");
         else
             System.out.print("BLACK TO MOVE\n");
-        game.printBoard();
+        board.printBoard();
     }
 
     public ChessBoard getChessBoard() {
-        return game;
+        return board;
     }
 
 }

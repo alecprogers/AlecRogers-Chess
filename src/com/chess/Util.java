@@ -65,4 +65,16 @@ public class Util {
         }
         return intIp;
     }
+
+    // Helper method that determines whether coordinates valid
+    public static String verifyCoord(String coord) {
+        boolean isCoord = false;
+        if (coord.matches("[a-h][1-8]")) isCoord = true;
+        while (!isCoord) {
+            System.out.print("Invalid coordinate. Please try again: ");
+            coord = Util.getString();
+            if (coord.matches("[a-h][1-8]")) isCoord = true;
+        }
+        return coord;
+    }
 }
