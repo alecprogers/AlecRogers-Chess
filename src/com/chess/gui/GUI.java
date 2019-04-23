@@ -72,7 +72,7 @@ public class GUI {
         boardPanel.drawBoard(game);
     }
 
-    public void updateTitle(String newTitle) { // todo do something with this or delete it
+    public void updateTitle(String newTitle) {
         gameFrame.setTitle(newTitle);
     }
 
@@ -158,7 +158,7 @@ public class GUI {
             String pieceLetter = "";
 
             if (!curPiece.isEmpty()) {
-                colorLetter = curPiece.isWhite() ? "w" : "b"; // fixme not certain about this...
+                colorLetter = curPiece.isWhite() ? "w" : "b";
                 pieceLetter = curPiece.toString().toLowerCase();
             }
             return colorLetter + pieceLetter;

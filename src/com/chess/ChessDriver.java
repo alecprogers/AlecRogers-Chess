@@ -40,8 +40,6 @@ public class ChessDriver {
         while (gameStatus == 0 || gameStatus == 3 || gameStatus == 4) { // game is still going
             //game.printGame(); // prints board to console
 
-            //gui = new GUI(game.getChessBoard()); // fixme
-
             game.playTurn();
 
             gameStatus = game.getGameStatus();

@@ -50,7 +50,7 @@ public class Game {
             curMove = intFace.getMoveFromPGN();
         }
         else {
-            curMove = intFace.getMoveFromGUI(); // TODO add support for other methods
+            curMove = intFace.getMoveFromGUI();
             intFace.resetGUIMove();
         }
 
@@ -66,7 +66,7 @@ public class Game {
                     curMove = intFace.getMoveFromPGN();
                 }
                 else {
-                    curMove = intFace.getMoveFromGUI(); // TODO add support for other methods
+                    curMove = intFace.getMoveFromGUI();
                     intFace.resetGUIMove();
                 }
 
@@ -75,7 +75,7 @@ public class Game {
         }
         gameStatus = curMove.getStatus(board, whiteToMove);
 
-        gameLog.addMove(curMove.getFromCoord() + curMove.getToCoord()); // FIXME
+        gameLog.addMove(curMove.getFromCoord() + curMove.getToCoord());
 
         whiteToMove = !whiteToMove;
 

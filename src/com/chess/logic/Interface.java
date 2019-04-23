@@ -33,7 +33,7 @@ public class Interface {
         return new Move(board, whiteToMove, fromCoords, toCoords);
     }
 
-    public Move getMoveFromPGN() { // FIXME
+    public Move getMoveFromPGN() {
         String coords = pgn.getNextMove();
 
         fromCoords = Util.parseFromCoords(coords);
