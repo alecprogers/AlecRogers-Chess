@@ -1,21 +1,16 @@
 package com.chess.logic;
 
-import com.chess.Util;
-
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 
 public class PGNWriter {
 
-    ArrayList<String> pgnMoves;
-    String fileName = "";
-    int moveNum;
+    private ArrayList<String> pgnMoves;
+    private int moveNum;
 
     public PGNWriter() {
         pgnMoves = new ArrayList<>();
-        System.out.print("Enter the name the file to save to: ");
-        this.fileName = Util.getString();
         moveNum = 0;
     }
 
@@ -24,11 +19,11 @@ public class PGNWriter {
         moveNum++;
     }
 
-    public void printToFile() {
+    public void printToFile(String fileName) {
 
         try {
             FileWriter fw = new FileWriter(fileName);
-            fw.write("[game info]\n\n"); // todo add actual game data
+            fw.write("[Event JavaChess]\n[Site University of Alabama]\n[Date ??/??/2019]\n\n");
 
             for (int i = 0; i < moveNum; i++) {
                 fw.write(pgnMoves.get(i) + "\n");

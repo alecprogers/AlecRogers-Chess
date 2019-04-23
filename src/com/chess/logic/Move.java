@@ -3,7 +3,6 @@ package com.chess.logic;
 import com.chess.Util;
 import com.chess.gui.GUI;
 
-
 public class Move {
 
     private ChessBoard board;
@@ -16,7 +15,7 @@ public class Move {
     private int toX;
     private int toY;
 
-    // No arg constructor -- gets all its own info from user
+    // No arg constructor
     public Move() {
     }
 
@@ -34,27 +33,8 @@ public class Move {
         this.toY = Util.fileToCol(toCoord);
     }
 
-    // Gets input from user
-    public void getMove() {
-        System.out.print("Enter the coordinate to move FROM: ");
-        String fromCoord = Util.getString();
-        fromCoord = Util.verifyCoord(fromCoord);
-
-
-        System.out.print("Enter the coordinates to move TO: ");
-        String toCoord = Util.getString();
-        toCoord = Util.verifyCoord(toCoord);
-
-        this.fromX = Util.rankToRow(fromCoord);
-        this.fromY = Util.fileToCol(fromCoord);
-        this.toX = Util.rankToRow(toCoord);
-        this.toY = Util.fileToCol(toCoord);
-    }
-
     // Gets input from user, returns true if move was successful
     public boolean checkMove() {
-
-        //getMove(); // FIXME
 
         // Check if move is legal from physics standpoint
         if (!board.checkPhysics(whiteToMove, fromX, fromY, toX, toY)) {

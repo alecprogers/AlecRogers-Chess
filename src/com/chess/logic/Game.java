@@ -1,5 +1,7 @@
 package com.chess.logic;
 
+import javax.swing.*;
+
 public class Game {
 
     private ChessBoard board;
@@ -11,17 +13,25 @@ public class Game {
 
     private int gameStatus;
 
+    private boolean importPGN;
+    private String ipNamePGN;
+
     private PGNImporter inputPGN;
     private PGNWriter gameLog;
 
 
-    public Game(boolean importPgn) {
+    public Game(boolean importPgn, String ipNamePGN) {
+        this.importPGN = importPgn;
+        this.ipNamePGN = ipNamePGN;
+
         board = new ChessBoard();
 
+
         if (importPgn) {
-            inputPGN = new PGNImporter();
+            inputPGN = new PGNImporter(ipNamePGN);
         }
-        //gameLog = new PGNWriter(); // FIXME
+
+        gameLog = new PGNWriter();
 
         whiteToMove = true;
         whiteInCheck = false;
@@ -30,43 +40,49 @@ public class Game {
         gameStatus = 0;
     }
 
-    // GUI Constructor // FIXME
-    public Game(ChessBoard board, String fromCoords, String toCoords) {
-        this.board = board;
-
-        whiteToMove = true;
-
-        this.curMove = new Move(board, whiteToMove, fromCoords, toCoords);
-    }
-
     public ChessBoard playTurn() {
 
-        Interface intFace = new Interface(gameLog, board, whiteToMove);
+        Interface intFace = new Interface(board, whiteToMove, inputPGN);
+
+        Move curMove;
+
+        if (importPGN && !intFace.isEndOfPGN()) {
+            curMove = intFace.getMoveFromPGN();
+        }
+        else {
+            curMove = intFace.getMoveFromGUI(); // TODO add support for other methods
+            intFace.resetGUIMove();
+        }
+
         //Move curMove = intFace.getMoveFromConsole();
-        Move curMove = intFace.getMoveFromGUI();
 
         boolean validMove = false;
         while (!validMove) {
             validMove = curMove.checkMove();
             if (!validMove) {
                 System.out.print("Invalid move. Please enter a different move.\n");
-                curMove = intFace.getMoveFromConsole();
+
+                if (importPGN && !intFace.isEndOfPGN()) {
+                    curMove = intFace.getMoveFromPGN();
+                }
+                else {
+                    curMove = intFace.getMoveFromGUI(); // TODO add support for other methods
+                    intFace.resetGUIMove();
+                }
+
+                //curMove = intFace.getMoveFromConsole();
             }
         }
         gameStatus = curMove.getStatus(board, whiteToMove);
 
-        //gameLog.addMove(curMove.getFromCoord() + curMove.getToCoord()); // FIXME
-        //gameLog.printToFile();
+        gameLog.addMove(curMove.getFromCoord() + curMove.getToCoord()); // FIXME
 
         whiteToMove = !whiteToMove;
 
         return board;
     }
 
-    public int getGameStatus() {
-        return gameStatus;
-    }
-
+    // Prints board to console
     public void printGame() {
         if (whiteToMove)
             System.out.print("WHITE TO MOVE\n");
@@ -75,8 +91,21 @@ public class Game {
         board.printBoard();
     }
 
+    public int getGameStatus() {
+        return gameStatus;
+    }
+
     public ChessBoard getChessBoard() {
         return board;
+    }
+
+    public boolean isWhiteToMove() {
+        return whiteToMove;
+    }
+
+    public void saveOnExit() {
+        String fileName = JOptionPane.showInputDialog("What would you like to name your save file?");
+        gameLog.printToFile(fileName);
     }
 
 }

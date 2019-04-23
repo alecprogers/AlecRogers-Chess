@@ -5,17 +5,10 @@ import com.chess.logic.ChessBoard;
 import com.chess.logic.Game;
 import com.chess.logic.Piece;
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.awt.image.BufferedImage;
-import java.beans.PropertyChangeListener;
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,41 +16,59 @@ public class GUI {
 
     private JFrame gameFrame;
     private BoardPanel boardPanel;
-    private ChessBoard game;
+    private Game game;
+    private ChessBoard chessBoard;
 
     private String fromCoords;
     private String toCoords;
 
-    // FIXME not sure if this is right
     private GUIMove guiMove;
 
     private Color lightTileColor = Color.decode("#E6E6E6");
     private Color darkTileColor = Color.decode("#848484");
 
     private static Dimension WINDOW_SIZE = new Dimension(600, 600);
-    private static Dimension BOARD_SIZE = new Dimension(400, 350); // fixme change these values ?
+    private static Dimension BOARD_SIZE = new Dimension(400, 350);
     private static Dimension TILE_SIZE = new Dimension(10, 10);
 
-    public GUI(ChessBoard game) {
+    public GUI(Game game) {
         this.game = game;
+        this.chessBoard = game.getChessBoard();
 
         fromCoords = "";
         toCoords = "";
 
-        guiMove = new GUIMove(); // FIXME this could be wrong
+        guiMove = new GUIMove();
 
-        gameFrame = new JFrame("Chess");
+        gameFrame = new JFrame("WHITE TO MOVE");
         gameFrame.setSize(WINDOW_SIZE);
         gameFrame.setLayout(new BorderLayout());
 
         boardPanel = new BoardPanel();
         gameFrame.add(boardPanel, BorderLayout.CENTER);
 
+        gameFrame.addWindowListener(new java.awt.event.WindowAdapter() {
+            @Override
+            public void windowClosing(java.awt.event.WindowEvent windowEvent) {
+                if (JOptionPane.showConfirmDialog(gameFrame,
+                        "Would you like to save this game?", "Save Game?",
+                        JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION) {
+                    int status = game.getGameStatus();
+                    if (status == 0 || status == 3 || status == 4) {
+                        game.saveOnExit();
+                    }
+                }
+                System.exit(0);
+            }
+        });
+
         gameFrame.setVisible(true);
     }
 
+
+
     public void updateBoard(ChessBoard game) {
-        this.game = game;
+        this.chessBoard = game;
         boardPanel.drawBoard(game);
     }
 
@@ -116,15 +127,13 @@ public class GUI {
             this.row = Util.rankToRow(coords);
             this.col = Util.fileToCol(coords);
 
-            this.curPiece = game.getGame()[row][col];
+            this.curPiece = chessBoard.getGame()[row][col];
 
             setPreferredSize(TILE_SIZE);
             setTileColor();
 
             setLayout(new GridLayout());
 
-
-
             if (curPiece.isEmpty()) {
                 btn = addButton();
             }
@@ -132,49 +141,17 @@ public class GUI {
                 btn = addPieceImg(getTilePiece());
             }
 
-
-
             this.add(btn);
 
-
             btn.addActionListener(new ActionListener() {
-
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    System.out.print("\nButton at " + coords + " has been pressed\n");
-
                     guiMove.clickCoords(coords);
                 }
             });
 
             validate();
         }
-
-        /*
-        public void setCurPiece(Piece curPiece) {
-            this.curPiece = curPiece;
-        }
-
-        public void drawTile() {
-
-            // FIXME
-            setTileColor();
-            if (curPiece.isEmpty()) {
-                btn = addButton();
-            }
-            else {
-                btn = addPieceImg(getTilePiece());
-            }
-            repaint();
-            this.add(btn);
-
-            validate();
-        }
-
-        private void initializeButton() {
-
-        }
-         */
 
         private String getTilePiece() {
             String colorLetter = "";

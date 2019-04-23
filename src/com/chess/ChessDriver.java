@@ -1,8 +1,5 @@
-/* Tips to improve readability:
- *  1. When using for-loops in 2D array contexts, I typically call the index variables r (rows) and c (columns). So
- *      if you ever see an r or a c, it is likely iterating across the board in some form or another. I use i for
- *      all other applications.
- *
+/* Created by Alec Rogers as part of the MIS 220 Pariveda Competition
+ * aprogers2@crimson.ua.edu
  *
  * GRAPHICS COURTESY OF WIKIMEDIA FOUNDATION
  */
@@ -17,13 +14,18 @@ public class ChessDriver {
     public static void main(String[] args) {
         System.out.print("Hello, Pariveda\n\n");
 
-        Game game = new Game(false); // todo let user decide to import or not
+        LoadGame inGame = new LoadGame();
+        String ipNamePGN = inGame.getFileName();
 
-        GUI gui = new GUI(game.getChessBoard());
+        boolean importPGN = Util.fileExists(ipNamePGN);
+
+        Game game = new Game(importPGN, ipNamePGN);
+
+        GUI gui = new GUI(game);
 
         int gameStatus = 0;
 
-        /* gameStatus meaning:
+        /* gameStatus key:
          *
          * -1 if stalemate
          *  0 if normal
@@ -34,7 +36,7 @@ public class ChessDriver {
          */
 
         while (gameStatus == 0 || gameStatus == 3 || gameStatus == 4) { // game is still going
-            game.printGame();
+            //game.printGame(); // prints board to console
 
             //gui = new GUI(game.getChessBoard()); // fixme
 
@@ -47,20 +49,35 @@ public class ChessDriver {
             else if (gameStatus == 4)
                 System.out.print("WHITE IN CHECK\n");
 
-            //gui.updateTitle("NEW TITLE\n");
+            if (gameStatus == 3) {
+                gui.updateTitle("BLACK IN CHECK");
+            }
+            else if (gameStatus == 4) {
+                gui.updateTitle("WHITE IN CHECK");
+            }
+            else if (game.isWhiteToMove()) {
+                gui.updateTitle("WHITE TO MOVE");
+            }
+            else {
+                gui.updateTitle("BLACK TO MOVE");
+            }
 
             gui.updateBoard(game.getChessBoard());
         }
 
 
 
-        if (gameStatus == 1)
+        if (gameStatus == 1) {
             System.out.print("CHECKMATE: WHITE WINS\n");
-        else if (gameStatus == 2)
-            System.out.print("CHECKMATE: BLACK WINS");
-        else
+            gui.updateTitle("CHECKMATE: WHITE WINS");
+        }
+        else if (gameStatus == 2) {
+            System.out.print("CHECKMATE: BLACK WINS\n");
+            gui.updateTitle("CHECKMATE: BLACK WINS");
+        }
+        else {
             System.out.print("STALEMATE: DRAW\n");
-
-
+            gui.updateTitle("STALEMATE: DRAW");
+        }
     }
 }

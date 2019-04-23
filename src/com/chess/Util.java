@@ -1,5 +1,7 @@
 package com.chess;
 
+import javax.swing.*;
+import java.io.File;
 import java.util.Scanner;
 
 public class Util {
@@ -49,6 +51,16 @@ public class Util {
     // Gets full coords, returns coords to move to
     public static String parseToCoords(String inMove) {
         return inMove.substring(inMove.length() - 2);
+    }
+
+    // Checks to see if file exists
+    public static boolean fileExists(String fileName) {
+        File file = new File(fileName);
+        if (!file.isFile()) {
+            JOptionPane.showMessageDialog(null, "Error: File does not exist.");
+            return false;
+        }
+        return true;
     }
 
     // Helper method that gets String from user

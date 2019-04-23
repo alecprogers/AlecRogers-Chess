@@ -2,6 +2,7 @@ package com.chess.logic;
 
 import com.chess.Util;
 
+import javax.swing.*;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -9,18 +10,23 @@ import java.util.Scanner;
 
 public class PGNImporter {
 
-    private ChessBoard board;
     private String fileName;
     ArrayList<String> pgnMoves;
     private int curMove;
+    private boolean endOfFile;
 
-    public PGNImporter() {
+    public PGNImporter(String fileName) {
+        this.fileName = fileName;
+
+        /*
         System.out.print("Enter the name of the PGN file you would like to import: ");
         fileName = Util.getString();
+        */
 
         File pgnFile = new File(fileName);
         if (!pgnFile.isFile()) {
             System.err.print("Unable to import PGN. File not found.\n");
+            JOptionPane.showMessageDialog(null, "Error: Unable to import PGN. File not found.");
         }
         else {
             try {
@@ -44,19 +50,18 @@ public class PGNImporter {
                 System.err.print("Unable to import PGN. File not found.\n");
             }
         }
-        curMove = 0;
-        board = new ChessBoard();
+        curMove = -1;
     }
 
-    public Move getNextMove() {
-        String toCoords = Util.parseToCoords(pgnMoves.get(curMove));
-
-        String fromCoords = Util.parseFromCoords(pgnMoves.get(curMove));
-
-        System.out.print("Move " + curMove + ": " + fromCoords + toCoords + "\n");
-
+    public String getNextMove() {
         curMove++;
+        endOfFile = (curMove == pgnMoves.size() - 1);
 
-        return new Move();
+        System.out.print(pgnMoves.get(curMove) + "\n");
+        return pgnMoves.get(curMove);
+    }
+
+    public boolean isEndOfFile() {
+        return endOfFile;
     }
 }

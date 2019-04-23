@@ -11,17 +11,20 @@ public class Interface {
     private String fromCoords;
     private String toCoords;
 
+    private GUIMove guiMove;
 
-    public Interface(PGNWriter gameLog, ChessBoard board, boolean whiteToMove) {
+    private PGNImporter pgn;
+
+    public Interface(ChessBoard board, boolean whiteToMove, PGNImporter pgn) {
         this.board = board;
         this.whiteToMove = whiteToMove;
+        this.pgn = pgn;
     }
 
     public Move getMoveFromConsole() {
         System.out.print("Enter the coordinate to move FROM: ");
         fromCoords = Util.getString();
         fromCoords = Util.verifyCoord(fromCoords);
-
 
         System.out.print("Enter the coordinates to move TO: ");
         toCoords = Util.getString();
@@ -31,20 +34,30 @@ public class Interface {
     }
 
     public Move getMoveFromPGN() { // FIXME
-        PGNImporter pgn = new PGNImporter();
-        pgn.getNextMove();
+        String coords = pgn.getNextMove();
 
-        return new Move();
+        fromCoords = Util.parseFromCoords(coords);
+        toCoords = Util.parseToCoords(coords);
+
+        return new Move(board, whiteToMove, fromCoords, toCoords);
+    }
+
+    public boolean isEndOfPGN() {
+        return pgn.isEndOfFile();
     }
 
     public Move getMoveFromGUI() {
 
-        GUIMove guiMove = new GUIMove();
+        guiMove = new GUIMove();
 
         String coords = guiMove.getMove();
         while (!guiMove.hasFullMove()) {
+            try {
+                Thread.sleep(500);
+            }
+            catch(InterruptedException ex){
 
-            //Util.enterToContinue();
+            }
 
             coords = guiMove.getMove();
         }
@@ -56,6 +69,10 @@ public class Interface {
 
         return new Move(board, whiteToMove, fromCoords, toCoords);
         //return new Move();
+    }
+
+    public void resetGUIMove() {
+        guiMove.reset();
     }
 
 }
