@@ -9,6 +9,8 @@ package com.chess;
 import com.chess.logic.*;
 import com.chess.gui.*;
 
+import javax.swing.*;
+
 public class ChessDriver {
 
     public static void main(String[] args) {
@@ -17,7 +19,7 @@ public class ChessDriver {
         LoadGame inGame = new LoadGame();
         String ipNamePGN = inGame.getFileName();
 
-        boolean importPGN = Util.fileExists(ipNamePGN);
+        boolean importPGN = inGame.getImportPgn();
 
         Game game = new Game(importPGN, ipNamePGN);
 
@@ -69,14 +71,17 @@ public class ChessDriver {
 
         if (gameStatus == 1) {
             System.out.print("CHECKMATE: WHITE WINS\n");
+            JOptionPane.showMessageDialog(null, "CHECKMATE: WHITE WINS!");
             gui.updateTitle("CHECKMATE: WHITE WINS");
         }
         else if (gameStatus == 2) {
             System.out.print("CHECKMATE: BLACK WINS\n");
+            JOptionPane.showMessageDialog(null, "CHECKMATE: BLACK WINS!");
             gui.updateTitle("CHECKMATE: BLACK WINS");
         }
         else {
             System.out.print("STALEMATE: DRAW\n");
+            JOptionPane.showMessageDialog(null, "STALEMATE: DRAW");
             gui.updateTitle("STALEMATE: DRAW");
         }
     }

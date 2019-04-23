@@ -189,21 +189,24 @@ public class ChessBoard {
     // Receives (X, Y) coords to move from/to, returns false if move is castle from or through check
     public boolean checkCastle(int fromX, int fromY, int toX, int toY) {
 
+        boolean checkWhite = !game[fromX][fromY].isWhite();
+
         if (game[fromX][fromY].getType() == 0) {
             if (fromX == 7 && fromY == 4) { // white king
                 if (toX == 7 && toY == 6) { // kingside castle
-                    return (isInCheck("e1") || isInCheck("f1")); // returns false if in check
+                    // returns false if in check
+                    return (isInCheck("e1", checkWhite) && isInCheck("f1", checkWhite));
                 }
                 else if (toX == 7 && toY == 2) { // queenside castle
-                    return (isInCheck("e1") || isInCheck("d1"));
+                    return (isInCheck("e1", checkWhite) && isInCheck("d1", checkWhite));
                 }
             }
             else if (fromX == 0 && fromY == 4) { // black king
                 if (toX == 0 && toY == 6) { // kingside castle
-                    return (isInCheck("e8") || isInCheck("f8"));
+                    return (isInCheck("e8", checkWhite) && isInCheck("f8", checkWhite));
                 }
                 else if (toX == 0 && toY == 2) { // queenside castle
-                    return (isInCheck("e8") || isInCheck("d8"));
+                    return (isInCheck("e8", checkWhite) && isInCheck("d8", checkWhite));
                 }
             }
         }
@@ -211,16 +214,14 @@ public class ChessBoard {
     }
 
     // Receives coords, returns true if specified location is in check
-    public boolean isInCheck(String coords) {
-
-        boolean whitePiece = game[Util.rankToRow(coords)][Util.fileToCol(coords)].isWhite();
+    public boolean isInCheck(String coords, boolean checkWhiteAttack) {
 
         for (int r = 0; r < 8; r++) {
             for (int c = 0; c < 8; c++) {
                 Piece curPiece = game[r][c];
 
                 // if curPiece exists and is of opposing color
-                if (curPiece.isWhite() != whitePiece && !curPiece.isEmpty()) {
+                if (curPiece.isWhite() != checkWhiteAttack && !curPiece.isEmpty()) {
                     String[] allMoves = getAllMoves(curPiece);
                     for (int i = 0; i < allMoves.length; i++) {
 
