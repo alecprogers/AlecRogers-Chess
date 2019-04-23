@@ -146,7 +146,8 @@ public class GUI {
             btn.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    guiMove.clickCoords(coords);
+                    guiMove.clickCoords(coords, btn, game);
+                    // guiMove.clickCoords(coords); // TODO
                 }
             });
 

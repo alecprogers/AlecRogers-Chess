@@ -1,6 +1,7 @@
 package com.chess.logic;
 
 import com.chess.Util;
+import com.chess.gui.PawnPromotion;
 import com.chess.logic.pieces.*;
 
 public class ChessBoard {
@@ -195,18 +196,18 @@ public class ChessBoard {
             if (fromX == 7 && fromY == 4) { // white king
                 if (toX == 7 && toY == 6) { // kingside castle
                     // returns false if in check
-                    return (isInCheck("e1", checkWhite) && isInCheck("f1", checkWhite));
+                    return !(isInCheck("e1", checkWhite) || isInCheck("f1", checkWhite));
                 }
                 else if (toX == 7 && toY == 2) { // queenside castle
-                    return (isInCheck("e1", checkWhite) && isInCheck("d1", checkWhite));
+                    return !(isInCheck("e1", checkWhite) || isInCheck("d1", checkWhite));
                 }
             }
             else if (fromX == 0 && fromY == 4) { // black king
                 if (toX == 0 && toY == 6) { // kingside castle
-                    return (isInCheck("e8", checkWhite) && isInCheck("f8", checkWhite));
+                    return !(isInCheck("e8", checkWhite) || isInCheck("f8", checkWhite));
                 }
                 else if (toX == 0 && toY == 2) { // queenside castle
-                    return (isInCheck("e8", checkWhite) && isInCheck("d8", checkWhite));
+                    return !(isInCheck("e8", checkWhite) || isInCheck("d8", checkWhite));
                 }
             }
         }
@@ -221,7 +222,7 @@ public class ChessBoard {
                 Piece curPiece = game[r][c];
 
                 // if curPiece exists and is of opposing color
-                if (curPiece.isWhite() != checkWhiteAttack && !curPiece.isEmpty()) {
+                if (curPiece.isWhite() == checkWhiteAttack && !curPiece.isEmpty()) {
                     String[] allMoves = getAllMoves(curPiece);
                     for (int i = 0; i < allMoves.length; i++) {
 
@@ -584,6 +585,7 @@ public class ChessBoard {
                 Piece curPiece = game[r][c];
                 boolean white = curPiece.isWhite();
                 if (curPiece.getType() == 5) {
+                    /*
                     System.out.print("\nPawn Promotion (Choose which piece you would like to promote your pawn to):" +
                             "\n\t1. Queen\n\t2. Rook\n\t3. Bishop\n\t4. Knight\n");
                     boolean valid = false;
@@ -594,25 +596,27 @@ public class ChessBoard {
                             valid = true;
                         }
                     }
+                    */
+
+                    PawnPromotion promo = new PawnPromotion();
+                    int pType = promo.getChoice();
+
                     switch (pType) {
+                        case 0:
+                            game[r][c] = new Queen(Util.rowToRank(r), Util.colToFile(c), white);
+                            break;
                         case 1:
-                            game[r][c] = new Queen();
+                            game[r][c] = new Rook(Util.rowToRank(r), Util.colToFile(c), white);
                             break;
                         case 2:
-                            game[r][c] = new Rook();
+                            game[r][c] = new Bishop(Util.rowToRank(r), Util.colToFile(c), white);
                             break;
                         case 3:
-                            game[r][c] = new Bishop();
-                            break;
-                        case 4:
-                            game[r][c] = new Knight();
+                            game[r][c] = new Knight(Util.rowToRank(r), Util.colToFile(c), white);
                             break;
                     }
                     // Update variables
-                    game[r][c].setIsWhite(white);
                     game[r][c].setHasMoved(true);
-                    game[r][c].setRank(Util.rowToRank(r));
-                    game[r][c].setFile(Util.colToFile(c));
                 }
             }
         }

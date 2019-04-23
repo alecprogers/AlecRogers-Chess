@@ -53,7 +53,7 @@ public class Move {
         dupGame.makeMove(fromX, fromY, toX, toY);
 
         // Check if move puts king in check
-        if (dupGame.isInCheck(dupGame.getKing(whiteToMove), whiteToMove)) {
+        if (dupGame.isInCheck(dupGame.getKing(whiteToMove), !whiteToMove)) {
             return false;
         }
 
@@ -86,7 +86,7 @@ public class Move {
          */
 
         // Check if other player is in check
-        if (board.isInCheck(board.getKing(!whiteToMove), !whiteToMove)) {
+        if (board.isInCheck(board.getKing(!whiteToMove), whiteToMove)) {
             // check for checkmate, if true return 1 or 2
             boolean canMove = false; // goal is to make this true; find a legal move that does not result in check
 
@@ -98,7 +98,7 @@ public class Move {
                         for (int i = 0; i < allMoves.length && !canMove; i++) {
                             ChessBoard dupGame = new ChessBoard(board);
                             dupGame.makeMove(r, c, Util.rankToRow(allMoves[i]), Util.fileToCol(allMoves[i]));
-                            if (!dupGame.isInCheck(dupGame.getKing(!whiteToMove), !whiteToMove)) {
+                            if (!dupGame.isInCheck(dupGame.getKing(!whiteToMove), whiteToMove)) {
                                 canMove = true;
                             }
                         }
@@ -133,7 +133,7 @@ public class Move {
                         for (int i = 0; i < allMoves.length && !canMove; i++) {
                             ChessBoard dupGame = new ChessBoard(board);
                             dupGame.makeMove(r, c, Util.rankToRow(allMoves[i]), Util.fileToCol(allMoves[i]));
-                            if (!dupGame.isInCheck(dupGame.getKing(!whiteToMove), !whiteToMove)) {
+                            if (!dupGame.isInCheck(dupGame.getKing(!whiteToMove), whiteToMove)) {
                                 canMove = true;
                             }
                         }
