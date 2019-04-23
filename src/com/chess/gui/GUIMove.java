@@ -13,7 +13,7 @@ public class GUIMove {
     private static String toCoords;
     private static boolean fullMove;
 
-    private String[] allMoves; // TODO
+    private String[] allMoves;
 
     public GUIMove() {
         this.fromCoords = "";
@@ -70,7 +70,6 @@ public class GUIMove {
         fromCoords = "";
         toCoords = "";
         fullMove = false;
-        // TODO reset allMoves ?
     }
 
 }

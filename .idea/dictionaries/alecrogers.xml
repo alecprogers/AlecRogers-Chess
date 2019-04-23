@@ -2,8 +2,13 @@
   <dictionary name="alecrogers">
     <words>
       <w>coords</w>
+      <w>kingside</w>
+      <w>pariveda</w>
       <w>passant</w>
+      <w>passantable</w>
       <w>passanted</w>
+      <w>queenside</w>
+      <w>wikimedia</w>
     </words>
   </dictionary>
 </component>

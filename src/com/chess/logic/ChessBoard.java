@@ -635,7 +635,6 @@ public class ChessBoard {
 
     // Receives whiteToMove, returns the coordinates of the corresponding king
     public String getKing(boolean whiteToMove) {
-        String kCoords = "";
 
         // Find location of king
         for (int r = 0; r < 8; r++) {
@@ -643,8 +642,7 @@ public class ChessBoard {
                 Piece curPiece = game[r][c];
                 // Check if curPiece is the king
                 if (curPiece.getType() == 0 && curPiece.isWhite() == whiteToMove) {
-                    kCoords = Util.colToFile(c) + Util.rowToRank(r);
-                    return kCoords;
+                    return Util.colToFile(c) + Util.rowToRank(r);
                 }
             }
         }

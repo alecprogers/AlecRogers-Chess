@@ -19,11 +19,7 @@ public class GUI {
     private Game game;
     private ChessBoard chessBoard;
 
-    private String fromCoords;
-    private String toCoords;
-
     private GUIMove guiMove;
-
 
     private Color borderColor = Color.decode("#424242");
     private Color borderFlashColor = Color.decode("#DF013A");
@@ -31,18 +27,17 @@ public class GUI {
     private Color lightTileColor = Color.decode("#E6E6E6");
     private Color darkTileColor = Color.decode("#848484");
     private Color selectedTileColor = Color.decode("#A9BCF5");
-    private Color highlightTileColor = Color.decode("#CED8F6");
+    private Color highlightLightTile = Color.decode("#CAD9F8");
+    private Color highlightDarkTile = Color.decode("#8295BE");
 
-    private static Dimension WINDOW_SIZE = new Dimension(600, 600);
+    //private static Dimension WINDOW_SIZE = new Dimension(600, 600);
+    private static Dimension WINDOW_SIZE = new Dimension(650, 650);
     private static Dimension BOARD_SIZE = new Dimension(400, 350);
     private static Dimension TILE_SIZE = new Dimension(10, 10);
 
     public GUI(Game game) {
         this.game = game;
         this.chessBoard = game.getChessBoard();
-
-        fromCoords = "";
-        toCoords = "";
 
         guiMove = new GUIMove();
 
@@ -51,7 +46,6 @@ public class GUI {
         gameFrame.setResizable(false);
         gameFrame.setLayout(new BorderLayout());
 
-        // FIXME
         gameFrame.getRootPane().setBorder(BorderFactory.
                 createMatteBorder(5, 5, 5, 5, borderColor));
 
@@ -98,7 +92,6 @@ public class GUI {
         gameFrame.setTitle(newTitle);
     }
 
-    // FIXME this maybe needs to be private
     public class BoardPanel extends JPanel {
 
         List<TilePanel> tiles;
@@ -133,7 +126,7 @@ public class GUI {
             this.validate();
         }
 
-        public void selectTile(String coords, boolean select) { // TODO finish this
+        public void selectTile(String coords, boolean select) {
             int row = Util.rankToRow(coords);
             int col = Util.fileToCol(coords);
 
@@ -155,11 +148,16 @@ public class GUI {
                 int index = (row * 8) + col;
 
                 if (highlight) {
-                    tiles.get(index).select(highlightTileColor);
-                }
-                else {
+                    if ((row % 2 == 0 && col % 2 == 1) || (row % 2 == 1 && col % 2 == 0)) {
+                        tiles.get(index).select(highlightDarkTile);
+                    }
+                    else {
+                        tiles.get(index).select(highlightLightTile);
+                    }
+                } else {
                     tiles.get(index).deselect();
                 }
+
             }
         }
     }
@@ -206,12 +204,12 @@ public class GUI {
             validate();
         }
 
-        private void select(Color color) { // TODO check on this
+        private void select(Color color) {
             setBackground(color);
             validate();
         }
 
-        private void deselect() { // TODO make sure this works
+        private void deselect() {
             setTileColor();
             validate();
         }

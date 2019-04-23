@@ -10,13 +10,10 @@ public class Game {
     private GUI gui;
 
     private boolean whiteToMove;
-    private boolean whiteInCheck;
-    private boolean blackInCheck;
 
     private int gameStatus;
 
     private boolean importPGN;
-    private String ipNamePGN;
 
     private PGNImporter inputPGN;
     private PGNWriter gameLog;
@@ -24,7 +21,6 @@ public class Game {
 
     public Game(boolean importPgn, String ipNamePGN) {
         this.importPGN = importPgn;
-        this.ipNamePGN = ipNamePGN;
 
         board = new ChessBoard();
 
@@ -36,8 +32,6 @@ public class Game {
         gameLog = new PGNWriter();
 
         whiteToMove = true;
-        whiteInCheck = false;
-        blackInCheck = false;
 
         gameStatus = 0;
     }
@@ -64,7 +58,6 @@ public class Game {
             if (!validMove) {
                 System.out.print("Invalid move. Please enter a different move.\n");
 
-                // FIXME
                 gui.flashBorder();
 
                 if (importPGN && !intFace.isEndOfPGN()) {
