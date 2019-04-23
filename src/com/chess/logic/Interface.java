@@ -53,7 +53,7 @@ public class Interface {
         String coords = guiMove.getMove();
         while (!guiMove.hasFullMove()) {
             try {
-                Thread.sleep(500);
+                Thread.sleep(250);
             }
             catch(InterruptedException ex){
 

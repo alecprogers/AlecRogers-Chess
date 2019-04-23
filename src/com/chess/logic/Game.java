@@ -1,11 +1,13 @@
 package com.chess.logic;
 
+import com.chess.gui.GUI;
+
 import javax.swing.*;
 
 public class Game {
 
     private ChessBoard board;
-    private Move curMove;
+    private GUI gui;
 
     private boolean whiteToMove;
     private boolean whiteInCheck;
@@ -62,6 +64,9 @@ public class Game {
             if (!validMove) {
                 System.out.print("Invalid move. Please enter a different move.\n");
 
+                // FIXME
+                gui.flashBorder();
+
                 if (importPGN && !intFace.isEndOfPGN()) {
                     curMove = intFace.getMoveFromPGN();
                 }
@@ -93,6 +98,10 @@ public class Game {
 
     public int getGameStatus() {
         return gameStatus;
+    }
+
+    public void setGUI(GUI gui) {
+        this.gui = gui;
     }
 
     public ChessBoard getChessBoard() {

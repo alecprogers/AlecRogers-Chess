@@ -24,8 +24,14 @@ public class GUI {
 
     private GUIMove guiMove;
 
+
+    private Color borderColor = Color.decode("#424242");
+    private Color borderFlashColor = Color.decode("#DF013A");
+
     private Color lightTileColor = Color.decode("#E6E6E6");
     private Color darkTileColor = Color.decode("#848484");
+    private Color selectedTileColor = Color.decode("#A9BCF5");
+    private Color highlightTileColor = Color.decode("#CED8F6");
 
     private static Dimension WINDOW_SIZE = new Dimension(600, 600);
     private static Dimension BOARD_SIZE = new Dimension(400, 350);
@@ -42,7 +48,12 @@ public class GUI {
 
         gameFrame = new JFrame("WHITE TO MOVE");
         gameFrame.setSize(WINDOW_SIZE);
+        gameFrame.setResizable(false);
         gameFrame.setLayout(new BorderLayout());
+
+        // FIXME
+        gameFrame.getRootPane().setBorder(BorderFactory.
+                createMatteBorder(5, 5, 5, 5, borderColor));
 
         boardPanel = new BoardPanel();
         gameFrame.add(boardPanel, BorderLayout.CENTER);
@@ -65,7 +76,18 @@ public class GUI {
         gameFrame.setVisible(true);
     }
 
+    public void flashBorder() {
+        gameFrame.getRootPane().setBorder(BorderFactory.
+                createMatteBorder(5, 5, 5, 5, borderFlashColor));
+        try {
+            Thread.sleep(250);
+        }
+        catch(InterruptedException ex){
 
+        }
+        gameFrame.getRootPane().setBorder(BorderFactory.
+                createMatteBorder(5, 5, 5, 5, borderColor));
+    }
 
     public void updateBoard(ChessBoard game) {
         this.chessBoard = game;
@@ -76,7 +98,8 @@ public class GUI {
         gameFrame.setTitle(newTitle);
     }
 
-    private class BoardPanel extends JPanel {
+    // FIXME this maybe needs to be private
+    public class BoardPanel extends JPanel {
 
         List<TilePanel> tiles;
 
@@ -108,6 +131,36 @@ public class GUI {
                 }
             }
             this.validate();
+        }
+
+        public void selectTile(String coords, boolean select) { // TODO finish this
+            int row = Util.rankToRow(coords);
+            int col = Util.fileToCol(coords);
+
+            int index = (row * 8) + col;
+
+            if (select) {
+                tiles.get(index).select(selectedTileColor);
+            }
+            else {
+                tiles.get(index).deselect();
+            }
+        }
+
+        public void highlightTiles(String[] allMoves, boolean highlight) {
+            for (int i = 0; i < allMoves.length; i++) {
+                int row = Util.rankToRow(allMoves[i]);
+                int col = Util.fileToCol(allMoves[i]);
+
+                int index = (row * 8) + col;
+
+                if (highlight) {
+                    tiles.get(index).select(highlightTileColor);
+                }
+                else {
+                    tiles.get(index).deselect();
+                }
+            }
         }
     }
 
@@ -146,11 +199,20 @@ public class GUI {
             btn.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    guiMove.clickCoords(coords, btn, game);
-                    // guiMove.clickCoords(coords); // TODO
+                    guiMove.clickCoords(coords, game, boardPanel);
                 }
             });
 
+            validate();
+        }
+
+        private void select(Color color) { // TODO check on this
+            setBackground(color);
+            validate();
+        }
+
+        private void deselect() { // TODO make sure this works
+            setTileColor();
             validate();
         }
 

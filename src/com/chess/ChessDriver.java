@@ -25,6 +25,8 @@ public class ChessDriver {
 
         GUI gui = new GUI(game);
 
+        game.setGUI(gui);
+
         int gameStatus = 0;
 
         /* gameStatus key:
