@@ -1,11 +1,11 @@
 package com.chess.gui;
 
 import com.chess.Util;
+import com.chess.logic.ChessBoard;
 import com.chess.logic.Game;
+import com.chess.logic.Move;
 import com.chess.logic.Piece;
 
-import javax.swing.*;
-import java.awt.*;
 
 public class GUIMove {
 
@@ -14,6 +14,7 @@ public class GUIMove {
     private static boolean fullMove;
 
     private String[] allMoves;
+    private String[] validMoves;
 
     public GUIMove() {
         this.fromCoords = "";
@@ -30,11 +31,35 @@ public class GUIMove {
                 System.out.print("Selecting fromCoords: " + coords + "\n");
                 fromCoords = coords;
 
-                boardPanel.selectTile(coords, true);
-
                 this.allMoves = game.getChessBoard().getAllMoves(curPiece);
 
-                boardPanel.highlightTiles(allMoves, true);
+                int count = allMoves.length;
+                for (int i = 0; i < allMoves.length; i++) {
+                    ChessBoard dupGame = new ChessBoard(game.getChessBoard());
+                    boolean valid = new Move(dupGame, whiteToMove, coords, allMoves[i]).checkMove();
+                    if (!valid) {
+                        allMoves[i] = "";
+                        count--;
+                    }
+                }
+
+                validMoves = new String[count];
+                int numCopied = 0;
+
+                for (int i = 0; i < allMoves.length; i++) {
+                    if (!allMoves[i].equals("")) {
+                        validMoves[numCopied] = allMoves[i];
+                        numCopied++;
+                    }
+                }
+
+                if (numCopied == 0) {
+                    boardPanel.selectTileRed(coords, true);
+                }
+                else {
+                    boardPanel.selectTile(coords, true);
+                    boardPanel.highlightTiles(validMoves, true);
+                }
             }
         }
         // If selected piece has been clicked on again, need to deselect
@@ -44,7 +69,7 @@ public class GUIMove {
 
             boardPanel.selectTile(coords, false);
 
-            boardPanel.highlightTiles(allMoves, false);
+            boardPanel.highlightTiles(validMoves, false);
         }
         // If a piece to move has been selected, and next click is on another piece
         else {
@@ -53,7 +78,8 @@ public class GUIMove {
                 toCoords = coords;
                 fullMove = true;
                 boardPanel.selectTile(fromCoords, false);
-                boardPanel.highlightTiles(allMoves, false);
+                boardPanel.highlightTiles(validMoves, false);
+                //boardPanel.highlightTiles(allMoves, false);
             }
         }
     }

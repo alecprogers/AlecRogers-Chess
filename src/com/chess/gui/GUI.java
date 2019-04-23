@@ -26,6 +26,7 @@ public class GUI {
 
     private Color lightTileColor = Color.decode("#E6E6E6");
     private Color darkTileColor = Color.decode("#848484");
+    private Color redTileColor = Color.decode("#F19A88");
     private Color selectedTileColor = Color.decode("#A9BCF5");
     private Color highlightLightTile = Color.decode("#CAD9F8");
     private Color highlightDarkTile = Color.decode("#8295BE");
@@ -134,6 +135,20 @@ public class GUI {
 
             if (select) {
                 tiles.get(index).select(selectedTileColor);
+            }
+            else {
+                tiles.get(index).deselect();
+            }
+        }
+
+        public void selectTileRed(String coords, boolean select) {
+            int row = Util.rankToRow(coords);
+            int col = Util.fileToCol(coords);
+
+            int index = (row * 8) + col;
+
+            if (select) {
+                tiles.get(index).select(redTileColor);
             }
             else {
                 tiles.get(index).deselect();
