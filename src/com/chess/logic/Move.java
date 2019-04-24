@@ -34,7 +34,7 @@ public class Move {
     }
 
     // Gets input from user, returns true if move was successful
-    public boolean checkMove() {
+    public boolean checkMove(boolean checkPromo) {
 
         // Check if move is legal from physics standpoint
         if (!board.checkPhysics(whiteToMove, fromX, fromY, toX, toY)) {
@@ -63,8 +63,11 @@ public class Move {
         // Update en passant variables
         board.checkEnPassant(whiteToMove);
 
-        // Check to see if any pawns need to be promoted
-        board.checkPromotion();
+        // CheckPromo is true in normal cases, false if move is a simulation
+        if (checkPromo) {
+            // Check to see if any pawns need to be promoted
+            board.checkPromotion();
+        }
 
         return true;
     }

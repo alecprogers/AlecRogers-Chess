@@ -36,7 +36,7 @@ public class GUIMove {
                 int count = allMoves.length;
                 for (int i = 0; i < allMoves.length; i++) {
                     ChessBoard dupGame = new ChessBoard(game.getChessBoard());
-                    boolean valid = new Move(dupGame, whiteToMove, coords, allMoves[i]).checkMove();
+                    boolean valid = new Move(dupGame, whiteToMove, coords, allMoves[i]).checkMove(false);
                     if (!valid) {
                         allMoves[i] = "";
                         count--;

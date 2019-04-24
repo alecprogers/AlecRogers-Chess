@@ -54,7 +54,7 @@ public class Game {
 
         boolean validMove = false;
         while (!validMove) {
-            validMove = curMove.checkMove();
+            validMove = curMove.checkMove(true);
             if (!validMove) {
                 System.out.print("Invalid move. Please enter a different move.\n");
 
